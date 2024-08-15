@@ -1,10 +1,11 @@
-import ChatBox from "./components/ChatBox";
+import React from 'react';
+import ChatWindow from './components/ChatWindow';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <h1>Chatbot TCUC</h1>
-      <ChatBox />
+      <ChatWindow />
     </div>
   );
 }
