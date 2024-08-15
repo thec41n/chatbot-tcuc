@@ -6,22 +6,24 @@ const ChatWindow = () => {
   const [messages, setMessages] = useState([]);
 
   const handleSendMessage = async (message) => {
-    const newMessage = { text: message, sender: "user" };
+    const newMessage = { text: message, sender: 'user' };
     setMessages([...messages, newMessage]);
 
-    const response = await fetch("http://localhost:8000/api/messages", {
-      method: "POST",
+    // Kirim pesan ke backend
+    const response = await fetch('http://localhost:8000/api/messages', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ sender: "user", message: message }),
+      body: JSON.stringify({ sender: 'user', message: message }),
     });
 
     const data = await response.json();
 
-    setMessages((prevMessages) => [
+    // Tambahkan balasan bot ke state messages
+    setMessages(prevMessages => [
       ...prevMessages,
-      { text: data.botReply.message, sender: "bot" },
+      { text: data.botReply.message, sender: 'bot' }
     ]);
   };
 
@@ -30,6 +32,7 @@ const ChatWindow = () => {
       <div className="messages">
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`}>
+            <span className="sender">{msg.sender === 'user' ? 'User' : 'Bot'}</span>
             {msg.text}
           </div>
         ))}
