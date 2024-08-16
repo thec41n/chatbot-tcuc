@@ -67,7 +67,7 @@ class BotManController extends Controller
                     $source = $article['source']['name'];
                     $replyMessage .= "<li><strong>" . ($index + 1) . ". " . $title . "</strong><br />";
                     $replyMessage .= "<em>Sumber: " . $source . "</em><br />";
-                    $replyMessage .= "<a href='" . $url . "' target='_blank'>Baca selengkapnya</a></li><br />";
+                    $replyMessage .= "<a href='" . $url . "' target='_blank' style='text-decoration: none;'>Baca selengkapnya</a></li><br />";
                 }
                 $replyMessage .= "</ul>";
 
