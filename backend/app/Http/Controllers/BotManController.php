@@ -17,8 +17,31 @@ class BotManController extends Controller
         DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
 
         $botman = BotManFactory::create([]);
-
         $messageText = trim($request->input('message', ''));
+
+        if ($messageText === 'load_previous_session') {
+            $previousMessages = Message::all()->map(function ($message) {
+                return [
+                    'text' => $message->message,
+                    'sender' => $message->sender,
+                ];
+            });
+
+            return response()->json(['messages' => $previousMessages]);
+        }
+
+        if (strtolower($messageText) === 'hapus chat') {
+            Message::truncate();
+            $replyMessage = "Semua riwayat chat telah dihapus.";
+            $botman->say($replyMessage, $botman->getUser()->getId());
+
+            Message::create([
+                'sender' => 'bot',
+                'message' => $replyMessage,
+            ]);
+
+            return;
+        }
 
         Message::create([
             'sender' => 'user',
@@ -93,5 +116,20 @@ class BotManController extends Controller
         } else {
             return "Maaf, tidak ada berita yang dapat ditampilkan saat ini.";
         }
+    }
+
+    protected function loadPreviousSession()
+    {
+        $messages = Message::orderBy('created_at', 'asc')->get();
+        $responseMessages = [];
+
+        foreach ($messages as $message) {
+            $responseMessages[] = [
+                'sender' => $message->sender,
+                'message' => $message->message,
+            ];
+        }
+
+        return response()->json(['messages' => $responseMessages]);
     }
 }

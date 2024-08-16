@@ -1,16 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.css";
 
 const ChatWindow = () => {
   const [messages, setMessages] = useState([]);
-  const csrfToken = document
-    .querySelector('meta[name="csrf-token"]')
-    .getAttribute("content");
+
+  useEffect(() => {
+    loadPreviousSession();
+  }, []);
+
+  const loadPreviousSession = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/botman", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: "load_previous_session" }),
+      });
+
+      const data = await response.json();
+
+      if (data.messages) {
+        setMessages(data.messages);
+      } else {
+        console.error("Unexpected response format:", data);
+      }
+    } catch (error) {
+      console.error("Error loading previous session:", error);
+    }
+  };
 
   const handleSendMessage = async (message) => {
     const newMessage = { text: message, sender: "user" };
     setMessages([...messages, newMessage]);
+
+    if (message.toLowerCase() === "hapus chat") {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: "Semua riwayat chat telah dihapus.", sender: "bot" },
+      ]);
+      setTimeout(() => setMessages([]), 3000);
+    }
 
     try {
       const response = await fetch("http://localhost:8000/botman", {
@@ -24,10 +55,12 @@ const ChatWindow = () => {
       const data = await response.json();
 
       if (data.messages && data.messages[0] && data.messages[0].text) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: data.messages[0].text, sender: "bot" },
-        ]);
+        if (message.toLowerCase() !== "hapus chat") {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { text: data.messages[0].text, sender: "bot" },
+          ]);
+        }
       } else {
         console.error("Unexpected response format:", data);
       }
