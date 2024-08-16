@@ -44,7 +44,14 @@ const ChatWindow = () => {
             <span className="sender">
               {msg.sender === "user" ? "User" : "Bot"}
             </span>
-            {msg.text}
+            {msg.sender === "bot" ? (
+              <div
+                className="bot-message"
+                dangerouslySetInnerHTML={{ __html: msg.text }}
+              />
+            ) : (
+              <div>{msg.text}</div>
+            )}
           </div>
         ))}
       </div>
