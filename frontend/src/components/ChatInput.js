@@ -23,7 +23,7 @@ const ChatInput = ({ onSendMessage }) => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress}
-        placeholder="Type a message..."
+        placeholder="Type a message... | use 'hapus chat for delete chat'"
       />
       <button onClick={handleSend}>Send</button>
     </div>

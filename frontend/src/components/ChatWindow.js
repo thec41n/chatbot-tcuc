@@ -4,6 +4,13 @@ import "./ChatWindow.css";
 
 const ChatWindow = () => {
   const [messages, setMessages] = useState([]);
+  const recommendedQuestions = [
+    { id: 1, text: "Bagaimana cuaca hari ini?" },
+    { id: 2, text: "Jam berapa sekarang?" },
+    { id: 3, text: "Berita terbaru apa hari ini?" },
+    { id: 4, text: "Bagaimana kondisi lalu lintas?" },
+    { id: 5, text: "Bagaimana cara menurunkan demam?" },
+  ];
 
   useEffect(() => {
     loadPreviousSession();
@@ -71,6 +78,17 @@ const ChatWindow = () => {
 
   return (
     <div className="chat-window">
+      <div className="recommended-questions">
+        {recommendedQuestions.map((question) => (
+          <div
+            key={question.id}
+            className="recommended-question"
+            onClick={() => handleSendMessage(question.text)}
+          >
+            {question.text}
+          </div>
+        ))}
+      </div>
       <div className="messages">
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`}>

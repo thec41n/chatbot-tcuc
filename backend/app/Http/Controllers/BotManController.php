@@ -52,7 +52,7 @@ class BotManController extends Controller
             $messageTextLower = strtolower($messageText);
             $replyMessage = '';
 
-            if (in_array($messageTextLower, ['hi', 'hello'])) {
+            if (in_array($messageTextLower, ['hi', 'hello', 'hai', 'halo', 'helo'])) {
                 $replyMessage = 'Halo! Saya Chatbot TCUC!';
             } elseif (in_array($messageTextLower, ['jam berapa sekarang?', 'pukul berapa sekarang?', 'sekarang jam berapa?'])) {
                 $replyMessage = 'Sekarang pukul ' . Carbon::now()->format('H:i') . '.';
@@ -68,7 +68,7 @@ class BotManController extends Controller
                 $replyMessage = 'Lalu lintas saat ini lancar.';
             } elseif (in_array($messageTextLower, ['cara menurunkan demam?', 'bagaimana menurunkan demam?'])) {
                 $replyMessage = 'Untuk menurunkan demam, Anda bisa minum banyak air, istirahat yang cukup, dan jika perlu, minum obat penurun demam seperti paracetamol.';
-            } elseif (in_array($messageTextLower, ['news', 'berita'])) {
+            } elseif (in_array($messageTextLower, ['news', 'berita', 'berita terbaru apa hari ini?'])) {
                 $replyMessage = $this->fetchLatestNews();
             } else {
                 $replyMessage = 'Maaf saya tidak memahami itu.';

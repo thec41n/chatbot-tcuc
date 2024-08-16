@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   overflow-y: hidden;
@@ -11,6 +12,27 @@ body, html {
   width: 100%;
   border: 1px solid #ccc;
   padding: 10px;
+}
+
+.recommended-questions {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.recommended-question {
+  background-color: #282c34;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.recommended-question:hover {
+  background-color: #61dafb;
+  color: #ffffff;
 }
 
 .messages {
