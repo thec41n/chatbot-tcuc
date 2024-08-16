@@ -66,7 +66,7 @@ class BotManController extends Controller
                 $replyMessage = 'Maaf, saya tidak bisa mengetahui lokasi Anda saat ini.';
             } elseif (in_array($messageTextLower, ['bagaimana kondisi lalu lintas?', 'lalu lintas sekarang bagaimana?'])) {
                 $replyMessage = 'Lalu lintas saat ini lancar.';
-            } elseif (in_array($messageTextLower, ['cara menurunkan demam?', 'bagaimana menurunkan demam?'])) {
+            } elseif (in_array($messageTextLower, ['cara menurunkan demam?', 'bagaimana cara menurunkan demam?'])) {
                 $replyMessage = 'Untuk menurunkan demam, Anda bisa minum banyak air, istirahat yang cukup, dan jika perlu, minum obat penurun demam seperti paracetamol.';
             } elseif (in_array($messageTextLower, ['news', 'berita', 'berita terbaru apa hari ini?'])) {
                 $replyMessage = $this->fetchLatestNews();
