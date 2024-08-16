@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Message;
 use BotMan\BotMan\BotMan;
 use Illuminate\Http\Request;
 use BotMan\BotMan\BotManFactory;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use BotMan\BotMan\Drivers\DriverManager;
 
@@ -26,9 +26,26 @@ class BotManController extends Controller
         ]);
 
         $botman->hears('.*', function (BotMan $bot) use ($messageText) {
-            if (strtolower($messageText) === 'hi' || strtolower($messageText) === 'hello') {
-                $replyMessage = 'Halo! Saya Chatbot TCUC! Silahkan gunakan kata kunci Berita untuk mengetahui berita terbaru!';
-            } elseif (strtolower($messageText) === 'news' || strtolower($messageText) === 'berita') {
+            $messageTextLower = strtolower($messageText);
+            $replyMessage = '';
+
+            if (in_array($messageTextLower, ['hi', 'hello'])) {
+                $replyMessage = 'Halo! Saya Chatbot TCUC!';
+            } elseif (in_array($messageTextLower, ['jam berapa sekarang?', 'pukul berapa sekarang?', 'sekarang jam berapa?'])) {
+                $replyMessage = 'Sekarang pukul ' . Carbon::now()->format('H:i') . '.';
+            } elseif (in_array($messageTextLower, ['hari ini tanggal berapa?', 'tanggal berapa sekarang?'])) {
+                $replyMessage = 'Hari ini tanggal ' . Carbon::now()->format('d-m-Y') . '.';
+            } elseif (in_array($messageTextLower, ['hari apa sekarang?'])) {
+                $replyMessage = 'Hari ini adalah hari ' . Carbon::now()->locale('id')->dayName . '.';
+            } elseif (in_array($messageTextLower, ['cuaca hari ini bagaimana?', 'bagaimana cuaca hari ini?'])) {
+                $replyMessage = 'Cuaca hari ini cerah dengan suhu sekitar 27°C.';
+            } elseif (in_array($messageTextLower, ['dimana saya sekarang?', 'lokasi saya dimana?'])) {
+                $replyMessage = 'Maaf, saya tidak bisa mengetahui lokasi Anda saat ini.';
+            } elseif (in_array($messageTextLower, ['bagaimana kondisi lalu lintas?', 'lalu lintas sekarang bagaimana?'])) {
+                $replyMessage = 'Lalu lintas saat ini lancar.';
+            } elseif (in_array($messageTextLower, ['cara menurunkan demam?', 'bagaimana menurunkan demam?'])) {
+                $replyMessage = 'Untuk menurunkan demam, Anda bisa minum banyak air, istirahat yang cukup, dan jika perlu, minum obat penurun demam seperti paracetamol.';
+            } elseif (in_array($messageTextLower, ['news', 'berita'])) {
                 $replyMessage = $this->fetchLatestNews();
             } else {
                 $replyMessage = 'Maaf saya tidak memahami itu.';
@@ -53,8 +70,6 @@ class BotManController extends Controller
         ])->get('https://newsapi.org/v2/top-headlines', [
             'country' => 'id',
         ]);
-
-        Log::info('News API Response: ', ['response' => $response->json()]);
 
         if ($response->successful() && $response->json('status') === 'ok') {
             $articles = $response->json('articles');
