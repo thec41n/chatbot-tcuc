@@ -35,7 +35,7 @@ Chatbot TCUC is a conversational AI chatbot designed to assist users by answerin
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/chatbot-tcuc.git
+   git clone https://github.com/thec41n/chatbot-tcuc.git
    cd chatbot-tcuc
    ```
 2. **Backend Setup (Laravel)**:
